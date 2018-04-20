@@ -1,11 +1,4 @@
 //some1bot, © AvenueBots, 2018.
-//Not labelled for repurpose or free use.
-/*
-	This work is licensed under a 
-	Creative Commons 
-	Attribution-NonCommercial-NoDerivatives 
-	4.0 International License.
-*/
 var Discord = require('discord.js');
 var client = new Discord.Client();
 var cmdChar = 's-';

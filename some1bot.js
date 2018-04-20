@@ -26,6 +26,7 @@ client.on('ready', () => {
 	console.newlog(`Logged on as ${client.user.tag}`);
 	client.user.setUsername('some1bot');
 	client.user.setActivity(`with @someone! | ${client.guilds.size} servers`);
+	// By Wistful__#9063
 	client.game_cycle = () => {
 		let games = [
 			`with @someone! | ${client.guilds.size} servers.`,

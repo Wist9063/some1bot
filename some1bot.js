@@ -13,7 +13,7 @@ var msg = 'message';
 var ping = require('node-http-ping');
 msg.a = msg.content;
 var pm2 = require('pm2');
-console.newlog = (str) => {
+console.newlog = str => {
 	console.log(str);
 };
 pm2.connect(function(err) {
@@ -38,7 +38,7 @@ client.on('ready', () => {
 		`with @someone! | Undergoing maintenence.`,
 		`with ${cmdChar}help | use @someone!`,
 		`with @someone! | ${client.channels.size} channels.`,
-		`with @someone! | ${client.users.size} users.`
+		`with @someone! | ${client.users.size} users.`,
 	];
 	var counter = -1;
 	var intervalID = setInterval(function() {
@@ -46,7 +46,7 @@ client.on('ready', () => {
 		if (counter >= statuses.length) {
 			counter = 0;
 		}
-		
+
 		client.user.setActivity(statuses[counter]);
 	}, 7500);
 });
@@ -83,38 +83,37 @@ function sectoform(sec) {
 	return years + months + days + hours + minutes + seconds;
 }
 function sectoform2(sec) {
-    var totalSeconds = sec;
-    var years = Math.floor(totalSeconds / 31556926);
-    totalSeconds %= 31556926;
-    var months = Math.floor(totalSeconds / Math.round(2629743.83));
-    totalSeconds %= Math.round(2629743.83);
-    var days = Math.floor(totalSeconds / 86400);
-    totalSeconds %= 86400;
-    var hours = Math.floor(totalSeconds / 3600);
-    totalSeconds %= 3600;
-    var minutes = Math.floor(totalSeconds / 60);
-    var seconds = totalSeconds % 60;
-    //console.log(years, months, days, hours, minutes, seconds);
-    if (parseInt(years) <= 9) years = "0" + years;
-    if (parseInt(months) <= 9) months = "0" + months;
-    if (parseInt(days) <= 9) days = "0" + days;
-    if (parseInt(hours) <= 9) hours = "0" + hours;
-    if (parseInt(minutes) <= 9) minutes = "0" + minutes;
-    if (parseInt(seconds) <= 9) seconds = "0" + seconds;
+	var totalSeconds = sec;
+	var years = Math.floor(totalSeconds / 31556926);
+	totalSeconds %= 31556926;
+	var months = Math.floor(totalSeconds / Math.round(2629743.83));
+	totalSeconds %= Math.round(2629743.83);
+	var days = Math.floor(totalSeconds / 86400);
+	totalSeconds %= 86400;
+	var hours = Math.floor(totalSeconds / 3600);
+	totalSeconds %= 3600;
+	var minutes = Math.floor(totalSeconds / 60);
+	var seconds = totalSeconds % 60;
+	//console.log(years, months, days, hours, minutes, seconds);
+	if (parseInt(years) <= 9) years = '0' + years;
+	if (parseInt(months) <= 9) months = '0' + months;
+	if (parseInt(days) <= 9) days = '0' + days;
+	if (parseInt(hours) <= 9) hours = '0' + hours;
+	if (parseInt(minutes) <= 9) minutes = '0' + minutes;
+	if (parseInt(seconds) <= 9) seconds = '0' + seconds;
 
-    years = years + ":";
-    months = months + ":";
-    days = days + ":";
-    hours = hours + ":";
-    minutes = minutes + ":";
+	years = years + ':';
+	months = months + ':';
+	days = days + ':';
+	hours = hours + ':';
+	minutes = minutes + ':';
 
-    if (years == "00:" && months == "00:") years = "";
-    if (months == "00:" && days == "00:") months = "";
-    if (days == "00:" && hours == "00:") days = "";
-    if (hours == "00:" && minutes == "00:") hours = "";
+	if (years == '00:' && months == '00:') years = '';
+	if (months == '00:' && days == '00:') months = '';
+	if (days == '00:' && hours == '00:') days = '';
+	if (hours == '00:' && minutes == '00:') hours = '';
 
-
-    return years + months + days + hours + minutes + seconds;
+	return years + months + days + hours + minutes + seconds;
 }
 client.on(msg, msg => {
 	/*if (msg.guild.id == '399318211042213898') {
@@ -137,17 +136,17 @@ client.on(msg, msg => {
 				}
 			}
 		} else {
-
 		}
 	}
 	if (cmd == 's-subscribe') {
 		if (msg.guild.id == '399318211042213898') {
 			const guildMember = msg.member;
-			guildMember.addRole('436331173992726538')
+			guildMember
+				.addRole('436331173992726538')
 				.then(msg.channel.send('Added you to updates!'))
 				.catch(e => msg.channel.send(e));
 		} else {
-			return; 	
+			return;
 		}
 	}
 	const usernames = msg.guild.members.map(
@@ -196,7 +195,10 @@ client.on(msg, msg => {
 	var args = msg.a.split(' ');
 	var cmd2 = args[0].substr(1);
 	var oof = '@someone';
-	var newInput = msg.a.substr(oof.length, 200).replace(/@someone/, '***' + getRandUser() + '***').replace(/-face/, '**' + getRandFace() + '**')
+	var newInput = msg.a
+		.substr(oof.length, 200)
+		.replace(/@someone/, '***' + getRandUser() + '***')
+		.replace(/-face/, '**' + getRandFace() + '**');
 	if (msg.a.startsWith('@someone')) {
 		try {
 			console.newlog(`${msg.author.username} used command.`);
@@ -333,7 +335,9 @@ client.on(msg, msg => {
 	}
 	if (cmd == cmdChar + 'pingu') {
 		if (!input) {
-			msg.channel.send(`Noot Noot! :penguin: No input detected. Pinging Discord API.`);
+			msg.channel.send(
+				`Noot Noot! :penguin: No input detected. Pinging Discord API.`
+			);
 			ping('discord.gg')
 				.then(time =>
 					msg.channel.send(
@@ -343,7 +347,9 @@ client.on(msg, msg => {
 				.catch(error => msg.channel.send(`Failed to ping: ${error}`));
 		} else {
 			ping(input)
-				.then(time => msg.channel.send(`Noot noot. :penguin: Response time: ${time}ms`))
+				.then(time =>
+					msg.channel.send(`Noot noot. :penguin: Response time: ${time}ms`)
+				)
 				.catch(error => msg.channel.send(`Failed to ping: ${error}`));
 		}
 	}
@@ -351,62 +357,47 @@ client.on(msg, msg => {
 		msg.channel.send('**1** flag available: -face');
 	}
 });
-/*prefix = 'a:'.toLowerCase();
-client.on(msg, msg => {
-	if (msg.a == client.user.tag) {
-		if (msg.member.id == '362315641161515008') {
-		  msg.channel.send(`**The current prefix is** ${prefix}!`);
-		}
-	}
-	if (msg.a.startsWith(prefix)) return;
-	var cmd = msg.a.split(' ')[0].toLowerCase();
-	var input = msg.a.substring(cmd.length).trim();
-	if (cmd == 'guess') {
-	  if (input == prefix) {
-	    msg.channel.send('yay guess');
-	    if (cmd == 'prefix') {
-	      if (!input) {
-	        msg.channel.send('enter input');
-	      } else {
-	        prefix = input;
-	        msg.channel.send(`prefix set to ${input} (${prefix}`)
-	      }
-	    }
-	  } else {
-	    msg.channel.send('incorrect noob');
-	  }
-	}
-});*/ //acies' thing
-/*
 client.on('guildCreate', guild => {
-	client.channels.get('433087849081077772').send({
-		embed: {
-			color: 3447003,
-			thumbnail: guild.iconURL,
-			title: '**Event: Joined a guild**',
-			fields: [
-				{
-					name: 'Guild Name, ID',
-					value: guild.name + ' ' + guild.id,
-				},
-				{
-					name: 'Guild Members',
-					value: guild.members.size,
-				},
-				{
-					name: 'Bot Guilds',
-					value: client.guilds.size,
-				},
-			],
-			timestamp: new Date(),
-		},
-	});
+	const joinEmbed = new Discord.RichEmbed()
+		.setTitle('I have joined a guild!')
+		.setDescription(`${guild.name} | ${guild.id}`)
+		.addField('Members in the guild', guild.memberCount)
+		.addField('Large Server?', guild.large ? 'Yes' : 'No')
+		.addField('Bot guilds now at:', client.guilds.size)
+		.setThumbnail(
+			guild.iconURL('png', 1024)
+				? guild.iconURL('png', 1024)
+				: 'https://discordapp.com/assets/2c21aeda16de354ba5334551a883b481.png'
+		)
+		.setTimestamp()
+		.setColor(0x32cd32)
+		.setFooter(
+			`Owner of guild: ${guild.owner.user.tag} | ${guild.owner.user.id}`
+		);
+	if (msg.channel.id == '436752344743411712') {
+		msg.channel.send(joinEmbed);
+	}
 });
-//removed from a server
 client.on('guildDelete', guild => {
-	msg.channel.send('Left a guild: ' + guild.name);
-	//remove from guildArray
-});*/ //doesnt work, cba to fix
-//FIXME: one of these days
+	const leftEmbed = new Discord.RichEmbed()
+		.setTitle('I have left a guild!')
+		.setDescription(`${guild.name} | ${guild.id}`)
+		.addField('Members in the guild', guild.memberCount)
+		.addField('Large Server?', guild.large ? 'Yes' : 'No')
+		.addField('Bot guilds now at:', client.guilds.size)
+		.setThumbnail(
+			guild.iconURL('png', 1024)
+				? guild.iconURL('png', 1024)
+				: 'https://discordapp.com/assets/2c21aeda16de354ba5334551a883b481.png'
+		)
+		.setTimestamp()
+		.setColor(0xff0000)
+		.setFooter(
+			`Owner of guild: ${guild.owner.user.tag} | ${guild.owner.user.id}`
+		);
+	if (msg.channel.id == '436752344743411712') {
+		msg.channel.send(leftEmbed);
+	}
+});
 var config = require('./config.json');
 client.login(config.notoken4u);

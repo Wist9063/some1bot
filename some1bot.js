@@ -6,6 +6,7 @@ var msg = 'message';
 var ping = require('node-http-ping');
 msg.a = msg.content;
 var pm2 = require('pm2');
+var config = require('./config.json');
 console.newlog = str => {
 	console.log(str);
 };
@@ -25,23 +26,20 @@ client.on('ready', () => {
 	console.newlog(`Logged on as ${client.user.tag}`);
 	client.user.setUsername('some1bot');
 	client.user.setActivity(`with @someone! | ${client.guilds.size} servers`);
-	var statuses = [
-		`with @someone! | ${client.guilds.size} servers.`,
-		`with @someone! | bit.ly/some1-bot`,
-		`with @someone! | Undergoing maintenence.`,
-		`with ${cmdChar}help | use @someone!`,
-		`with @someone! | ${client.channels.size} channels.`,
-		`with @someone! | ${client.users.size} users.`,
-	];
-	var counter = -1;
-	var intervalID = setInterval(function() {
-		++counter;
-		if (counter >= statuses.length) {
-			counter = 0;
-		}
-
-		client.user.setActivity(statuses[counter]);
-	}, 7500);
+	client.game_cycle = () => {
+		let games = [
+			`with @someone! | ${client.guilds.size} servers.`,
+			`with @someone! | bit.ly/some1-bot`,
+			`with @someone! | Undergoing maintenence.`,
+			`with ${cmdChar}help | use @someone!`,
+			`with @someone! | ${client.channels.size} channels.`,
+			`with @someone! | ${client.users.size} users.`
+		]
+		client.user.setActivity(games[Math.round(Math.random() * (games.length - 1))]);
+		return setTimeout(() => {
+		  client.game_cycle();
+		}, 7500);
+	  };
 });
 function sectoform(sec) {
 	//© Anon64, 2018. lol joke
@@ -350,48 +348,31 @@ client.on(msg, msg => {
 		msg.channel.send('**1** flag available: -face');
 	}
 });
-//Guild Join and Leave logs, thanks Wistful
+// Guild Join and Leave logs, thanks Wistful__#9063
 client.on('guildCreate', guild => {
 	const joinEmbed = new Discord.RichEmbed()
-		.setTitle('I have joined a guild!')
-		.setDescription(`${guild.name} | ${guild.id}`)
-		.addField('Members in the guild', guild.memberCount)
-		.addField('Large Server?', guild.large ? 'Yes' : 'No')
-		.addField('Bot guilds now at:', client.guilds.size)
-		.setThumbnail(
-			guild.iconURL('png', 1024)
-				? guild.iconURL('png', 1024)
-				: 'https://discordapp.com/assets/2c21aeda16de354ba5334551a883b481.png'
-		)
-		.setTimestamp()
-		.setColor(0x32cd32)
-		.setFooter(
-			`Owner of guild: ${guild.owner.user.tag} | ${guild.owner.user.id}`
-		);
-	if (msg.channel.id == '436752344743411712') {
-		msg.channel.send(joinEmbed);
-	}
+	.setTitle('I have joined a guild!')
+	.setDescription(`${guild.name} | ${guild.id}`)
+	.addField('Members in the guild', guild.memberCount)
+	.addField('Large Server?', guild.large ? "Yes" : "No")
+	.addField('Bot guilds now at:', bot.guilds.size)
+	.setThumbnail(guild.iconURL('png', 1024) ? guild.iconURL('png', 1024) : 'https://discordapp.com/assets/2c21aeda16de354ba5334551a883b481.png')
+	.setTimestamp()
+	.setColor(0x32CD32)
+	.setFooter(`Owner of guild: ${guild.owner.user.tag} | ${guild.owner.user.id}`)
+bot.guilds.get('399318211042213898').channels.get("436752344743411712").send({joinEmbed}).then(() => console.log('Bot | sent guildlog'))
 });
 client.on('guildDelete', guild => {
-	const leftEmbed = new Discord.RichEmbed()
-		.setTitle('I have left a guild!')
-		.setDescription(`${guild.name} | ${guild.id}`)
-		.addField('Members in the guild', guild.memberCount)
-		.addField('Large Server?', guild.large ? 'Yes' : 'No')
-		.addField('Bot guilds now at:', client.guilds.size)
-		.setThumbnail(
-			guild.iconURL('png', 1024)
-				? guild.iconURL('png', 1024)
-				: 'https://discordapp.com/assets/2c21aeda16de354ba5334551a883b481.png'
-		)
-		.setTimestamp()
-		.setColor(0xff0000)
-		.setFooter(
-			`Owner of guild: ${guild.owner.user.tag} | ${guild.owner.user.id}`
-		);
-	if (msg.channel.id == '436752344743411712') {
-		msg.channel.send(leftEmbed);
-	}
+	const embed = new Discord.RichEmbed()
+	.setTitle('I have left a guild!')
+	.setDescription(`${guild.name} | ${guild.id}`)
+	.addField('Members in the guild', guild.memberCount)
+	.addField('Large Server?', guild.large ? "<:vfdGreenTick:378652440758845442>" : "<:vfdRedTick:378652441052315649>")
+	.addField('Bot guilds now at:', bot.guilds.size)
+	.setThumbnail(guild.iconURL('png', 1024) ? guild.iconURL('png', 1024) : 'https://discordapp.com/assets/2c21aeda16de354ba5334551a883b481.png')
+	.setTimestamp()
+	.setColor(0xFF0000)
+	.setFooter(`Owner of guild: ${guild.owner.user.tag} | ${guild.owner.user.id}`)
+	bot.guilds.get('399318211042213898').channels.get("436752344743411712").send({embed}).then(() => console.log('Bot | sent guildlog'))
 });
-var config = require('./config.json');
 client.login(config.notoken4u);

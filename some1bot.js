@@ -357,6 +357,7 @@ client.on(msg, msg => {
 		msg.channel.send('**1** flag available: -face');
 	}
 });
+//Guild Join and Leave logs, thanks Wistful
 client.on('guildCreate', guild => {
 	const joinEmbed = new Discord.RichEmbed()
 		.setTitle('I have joined a guild!')

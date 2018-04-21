@@ -361,7 +361,7 @@ client.on('guildCreate', guild => {
 	.setTimestamp()
 	.setColor(0x32CD32)
 	.setFooter(`Owner of guild: ${guild.owner.user.tag} | ${guild.owner.user.id}`)
-bot.guilds.get('399318211042213898').channels.get("436752344743411712").send({joinEmbed}).then(() => console.log('Bot | sent guildlog'))
+client.guilds.get('399318211042213898').channels.get("436752344743411712").send({joinEmbed}).then(() => console.log('Bot | sent guildlog'))
 });
 client.on('guildDelete', guild => {
 	const embed = new Discord.RichEmbed()
@@ -374,6 +374,6 @@ client.on('guildDelete', guild => {
 	.setTimestamp()
 	.setColor(0xFF0000)
 	.setFooter(`Owner of guild: ${guild.owner.user.tag} | ${guild.owner.user.id}`)
-	bot.guilds.get('399318211042213898').channels.get("436752344743411712").send({embed}).then(() => console.log('Bot | sent guildlog'))
+	client.guilds.get('399318211042213898').channels.get("436752344743411712").send({embed}).then(() => console.log('Bot | sent guildlog'))
 });
 client.login(config.notoken4u);
